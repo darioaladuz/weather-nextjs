@@ -30,9 +30,9 @@ type Weather = {
   ]
 }
 
-export default async function Home() {
+export default function Home() {
   // const [data, setData] = useState(null)
-  const [query, setQuery] = useState("")
+  // const [query, setQuery] = useState("")
 
   const updateQuery = (e: React.ChangeEvent<any>) => {
     console.log(e.target.value);
@@ -40,12 +40,17 @@ export default async function Home() {
     // setQuery(e.value)
   }
 
-  const updateData = (e: React.ChangeEvent<any>) => {
+  const updateData = async (e: React.ChangeEvent<any>) => {
     e.preventDefault();
 
-    console.log(e.target.query.value);
+    const query = e.target.query.value
 
-    setQuery(e.target.query.value);
+    const res = await fetch(`http://localhost:3000/api/getcurrentweather/${query}`)
+    const data: Weather = await res.json()
+
+    console.log(data);
+
+    // setQuery("abc");
   }
 
   // const res = await fetch("http://localhost:3000/api/getcurrentweather/china")
@@ -59,8 +64,6 @@ export default async function Home() {
         <input name="query" type="text" />
         <button type="submit">update</button>
       </form>
-        
-      <p>{query}</p>
     </main>
   )
 }
